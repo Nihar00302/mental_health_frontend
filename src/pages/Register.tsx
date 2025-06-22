@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// ✅ Import base API URL from .env
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -19,13 +22,15 @@ const Register = () => {
     e.preventDefault();
     setError("");
     setSuccess("");
+
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;
     }
+
     setLoading(true);
     try {
-      await axios.post("http://localhost:5000/api/auth/register", {
+      await axios.post(`${API_URL}/api/auth/register`, {
         name: formData.name,
         email: formData.email,
         password: formData.password,
@@ -42,16 +47,11 @@ const Register = () => {
 
   return (
     <div className="d-flex align-items-center justify-content-center min-vh-100 bg-light">
-      <div
-        className="card shadow-sm p-4"
-        style={{ maxWidth: 400, width: "100%" }}
-      >
+      <div className="card shadow-sm p-4" style={{ maxWidth: 400, width: "100%" }}>
         <h2 className="mb-3 text-center">Create Account</h2>
         <form onSubmit={handleRegister}>
           <div className="mb-3">
-            <label htmlFor="name" className="form-label">
-              Name
-            </label>
+            <label htmlFor="name" className="form-label">Name</label>
             <input
               type="text"
               className="form-control"
@@ -63,10 +63,9 @@ const Register = () => {
               required
             />
           </div>
+
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
+            <label htmlFor="email" className="form-label">Email</label>
             <input
               type="email"
               className="form-control"
@@ -78,10 +77,9 @@ const Register = () => {
               required
             />
           </div>
+
           <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
+            <label htmlFor="password" className="form-label">Password</label>
             <input
               type="password"
               className="form-control"
@@ -93,10 +91,9 @@ const Register = () => {
               required
             />
           </div>
+
           <div className="mb-3">
-            <label htmlFor="confirmPassword" className="form-label">
-              Confirm Password
-            </label>
+            <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
             <input
               type="password"
               className="form-control"
@@ -108,8 +105,10 @@ const Register = () => {
               required
             />
           </div>
+
           {error && <div className="alert alert-danger py-2">{error}</div>}
           {success && <div className="alert alert-success py-2">{success}</div>}
+
           <button
             type="submit"
             className="btn btn-primary w-100"
@@ -118,6 +117,7 @@ const Register = () => {
             {loading ? "Creating account..." : "Create Account"}
           </button>
         </form>
+
         <div className="mt-3 text-center">
           <span>Already have an account? </span>
           <button
